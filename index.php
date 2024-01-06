@@ -6,6 +6,16 @@ $objectsPerPage = 10;
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
 $offset = ($currentPage - 1) * $objectsPerPage;
+$typeFilter = isset($_GET['type']) ? $_GET['type'] : '';
+
+$query = "SELECT object_name, address FROM points";
+
+if ($typeFilter !== '') {
+    $query .= " WHERE object_name LIKE '%$typeFilter%' LIMIT $objectsPerPage OFFSET $offset";
+} else {
+    $query .= " LIMIT $objectsPerPage OFFSET $offset";
+}
+
 ?>
 
 
@@ -23,13 +33,37 @@ $offset = ($currentPage - 1) * $objectsPerPage;
     
 </head>
 
-
 <body>
+<div class="container">
+<div class="row">
+<div class='col-lg-12'>
+    <div class="p-4 bg-light text-center text-white">
+        <h2>Объекты торговли лицензированным алкоголем</h2>
+    </div><br>
+</div>
+<div class='col-lg-6 col-md-6 col-sm-12'>
+    <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle='dropdown'>Тип объекта<span class='caret'></span></button>
+        <ul class='dropdown-menu'>
+            <?php
+            $typeQuery = "SELECT DISTINCT SUBSTRING_INDEX(object_name, ' ', 1) AS type FROM points";
+            $result = $connect->query($typeQuery);
+
+            if ($result && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<li><a class='dropdown-item' href='?page=1&type=" . urlencode($row['type']) . "'>" . $row['type'] . "</a></li>";
+                }
+            }
+            ?>
+        </ul>
+    </div>
+</div>
+</div>
+</div>
+
   <div class="container">
     <div class="row">
-            <h2>Объекты торговли лицензированным алкоголем</h2><br>
             <?php
-            $query = "SELECT object_name, address FROM points LIMIT $objectsPerPage OFFSET $offset";
             $result = $connect->query($query);
 
             if ($result && $result->num_rows > 0) {
@@ -52,17 +86,18 @@ $offset = ($currentPage - 1) * $objectsPerPage;
             }
 
             $totalPages = ceil($totalObjects / $objectsPerPage);
-
-            echo "<div class='col-lg-6 col-md-6 col-sm-12'>";
+            echo "<div class='col-12'>";
+            echo "<div class='pagination-links'>";
             if ($currentPage > 1) {
                 $prevPage = $currentPage - 1;
-                echo "<a href='?page=$prevPage'>Предыдущая</a>";
+                echo "<a href='?page=$prevPage&type=$typeFilter'>Предыдущая страница</a>";
             }
 
             if ($currentPage < $totalPages) {
                 $nextPage = $currentPage + 1;
-                echo "<a href='?page=$nextPage'>Следующая</a>";
+                echo "<a href='?page=$nextPage&type=$typeFilter'>Следующая страница</a>";
             }
+            echo "</div>";
             echo "</div>";
             ?>
         </div>
