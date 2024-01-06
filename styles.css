@@ -80,14 +80,14 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%; 
-    background-color: #000000; 
+    background-color: #212529; 
     text-align: center;
     padding: 10px; 
 }
 .btn-secondary {
-    background-color: #313538;
+    background-color: #212529;
     color: #fff;
-    border-color: #313538;
+    border-color: #212529;
     margin-bottom: 20px;
 }
 
@@ -157,4 +157,13 @@ footer {
 
 .pagination-links a:hover {
     background-color: #f0f0f0;
+}
+footer a {
+    text-decoration: none;
+    color: #9b9999;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #555;
 }
