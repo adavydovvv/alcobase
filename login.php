@@ -46,7 +46,7 @@ if (!empty($_POST)) {
         $user = mysqli_fetch_assoc($result);
         if (password_verify($password, $user['password'])) {
             session_start();
-            $_SESSION["login"] = $login;
+            $_SESSION["user_id"] = $user['user_id'];
             header("Location: index.php");
             exit;
         } else {

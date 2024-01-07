@@ -16,6 +16,7 @@ if ($typeFilter !== '') {
     $query .= " LIMIT $objectsPerPage OFFSET $offset";
 }
 
+
 ?>
 
 

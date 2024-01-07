@@ -12,7 +12,24 @@
           <a class="nav-link" href="index.php">Главная</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="login.php">Личный кабинет</a>
+        <?php
+        session_start();
+        include 'database.php';
+
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+            $result = mysqli_query($connect, "SELECT name FROM users WHERE user_id='$userId'");
+            if ($result && mysqli_num_rows($result) > 0) {
+                $user = mysqli_fetch_assoc($result);
+                $userName = $user['name'];
+            }
+            if (isset($userName)) {
+                echo "<a class='nav-link' href='user.php'>$userName</a>";
+            }
+            } else {
+                echo "<a class='nav-link' href='login.php'>Войти</a>";
+            }
+            ?>
         </li>
       </ul>
     </div>
