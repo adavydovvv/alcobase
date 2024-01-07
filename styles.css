@@ -167,3 +167,21 @@ footer a {
 footer a:hover {
     color: #555;
 }
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.form-control{
+    width: calc(100% - 12px);
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
