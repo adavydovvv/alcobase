@@ -8,7 +8,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($currentPage - 1) * $objectsPerPage;
 $typeFilter = isset($_GET['type']) ? $_GET['type'] : '';
 
-$query = "SELECT object_name, address FROM points";
+$query = "SELECT point_id, object_name, address FROM points";
 
 if ($typeFilter !== '') {
     $query .= " WHERE object_name LIKE '%$typeFilter%' LIMIT $objectsPerPage OFFSET $offset";
@@ -73,7 +73,7 @@ if ($typeFilter !== '') {
                     echo "<div class='object-block'>";
                     echo "<h3>" . $row['object_name'] . "</h3>";
                     echo "<p class='address-column'>" . $row['address'] . "</p>";
-                    echo "<a href='full_object_page.php?object_id={$row['object_id']}'>Подробнее об объекте</a>";
+                    echo "<a href='points.php?object_id={$row['point_id']}'>Подробнее об объекте</a>";
                     echo "</div>";
                     echo "</div>";
                 }
@@ -89,6 +89,7 @@ if ($typeFilter !== '') {
             $totalPages = ceil($totalObjects / $objectsPerPage);
             echo "<div class='col-12'>";
             echo "<div class='pagination-links'>";
+            echo "<a href='?page=1&type=$typeFilter'>Первая страница</a>";
             if ($currentPage > 1) {
                 $prevPage = $currentPage - 1;
                 echo "<a href='?page=$prevPage&type=$typeFilter'>Предыдущая страница</a>";
@@ -98,6 +99,7 @@ if ($typeFilter !== '') {
                 $nextPage = $currentPage + 1;
                 echo "<a href='?page=$nextPage&type=$typeFilter'>Следующая страница</a>";
             }
+            echo "<a href='?page=$totalPages&type=$typeFilter'>Последняя страница</a>";
             echo "</div>";
             echo "</div>";
             ?>
