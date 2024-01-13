@@ -10,14 +10,18 @@ if (isset($_SESSION['user_id'])) {
         $rating = $_POST['rating'];
         $comment = $_POST['comment'];
 
-        $sql = "INSERT INTO reviews (point_id, user_id, rating, comment, timestamp) VALUES ($pointId, $userId, $rating, '$comment', NOW())";
-        $result = $connect->query($sql);
+        $query = "INSERT INTO reviews (point_id, user_id, rating, comment, timestamp) VALUES (?, ?, ?, ?, NOW())";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param('iiis', $pointId, $userId, $rating, $comment);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        if ($result) {
+        if ($stmt) {
             header("Location: points.php?object_id=$pointId"); 
             exit;
         } else {
             echo $connect->error;
+            echo $result;
         }
     } else {
         echo "Недопустимый метод запроса.";

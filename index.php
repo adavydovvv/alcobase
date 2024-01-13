@@ -11,9 +11,16 @@ $typeFilter = isset($_GET['type']) ? $_GET['type'] : '';
 $query = "SELECT point_id, object_name, address FROM points";
 
 if ($typeFilter !== '') {
-    $query .= " WHERE object_name LIKE '%$typeFilter%' LIMIT $objectsPerPage OFFSET $offset";
+    $query .= " WHERE object_name LIKE ? LIMIT ? OFFSET ?";
+
+    $stmt = $connect->prepare($query);
+    $stmt->bind_param('sii', $typeFilter, $objectsPerPage, $offset);
+
 } else {
-    $query .= " LIMIT $objectsPerPage OFFSET $offset";
+    $query .= " LIMIT ? OFFSET ?";
+
+    $stmt = $connect->prepare($query);
+    $stmt->bind_param('ii', $objectsPerPage, $offset);
 }
 
 
@@ -65,7 +72,8 @@ if ($typeFilter !== '') {
   <div class="container">
     <div class="row">
             <?php
-            $result = $connect->query($query);
+             $stmt->execute();
+             $result = $stmt->get_result();
 
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -80,7 +88,9 @@ if ($typeFilter !== '') {
             }
                     
             $query = "SELECT COUNT(*) AS total FROM points";
-            $result = $connect->query($query);
+            $stmt = $connect->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
             if ($result && $result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $totalObjects = $row['total'];

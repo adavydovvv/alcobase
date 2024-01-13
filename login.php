@@ -1,6 +1,8 @@
 <?php
 include 'database.php';
 include 'navbar.php';
+
+$flag=true;
 ?>
 
 
@@ -41,7 +43,13 @@ if (!empty($_POST)) {
     $login = $_POST['login'];
     $password = $_POST['password'];
 
-    $result = mysqli_query($connect, "SELECT * FROM users WHERE login='$login'");
+
+    $query = "SELECT * FROM users WHERE login=?";
+    $stmt = $connect->prepare($query);
+    $stmt->bind_param('s', $login);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
     if (mysqli_num_rows($result) > 0) {
         $user = mysqli_fetch_assoc($result);
         if (password_verify($password, $user['password'])) {
@@ -49,11 +57,15 @@ if (!empty($_POST)) {
             $_SESSION["user_id"] = $user['user_id'];
             header("Location: index.php");
             exit;
-        } else {
-            echo "Неправильный логин или пароль.";
         }
-    } else {
-        echo "Пользователь не найден.";
+        else{
+            header("Location: login.php?error=1");
+            exit;
+        }
+    }
+    else{
+        header("Location: login.php?error=1");
+        exit;
     }
 }
 ?>
@@ -72,6 +84,12 @@ if (!empty($_POST)) {
         <input class="form-control" type="password" name="password">
     </div>
     <br>
+    <?php
+        if (isset($_GET['error']) && $_GET['error'] == 1) {
+            echo '<div class="error-message"><p>Неправильный логин или пароль</p></div>';
+        }
+        ?>
+        <br>
     <div>
         <button class="regbutton" type="submit">Войти</button>
     </div>

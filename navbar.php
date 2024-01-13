@@ -18,7 +18,11 @@
 
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
-            $result = mysqli_query($connect, "SELECT name FROM users WHERE user_id='$userId'");
+            $query = "SELECT name FROM users WHERE user_id=?";
+            $stmt = $connect->prepare($query);
+            $stmt->bind_param('s', $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
             if ($result && mysqli_num_rows($result) > 0) {
                 $user = mysqli_fetch_assoc($result);
                 $userName = $user['name'];

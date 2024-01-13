@@ -6,8 +6,11 @@ include 'navbar.php';
 $object_id = $_GET['object_id'] ?? null;
 
 if ($object_id) {
-    $sql = "SELECT * FROM points WHERE point_id = $object_id";
-    $result = $connect->query($sql);
+    $sql = "SELECT * FROM points WHERE point_id = ?";
+    $stmt = $connect->prepare($sql);
+    $stmt->bind_param('i', $object_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $object = $result->fetch_assoc();
@@ -36,7 +39,9 @@ if ($object_id) {
 
 <body>
 <div class="container mt-4">
-        <h2>Информация о объекте торговли</h2>
+        <div class="p-4 bg-light text-center text-white">
+        <h2>Информация об объекте торговли</h2>
+        </div><br>
         <div class="row">
             <div class="col-md-6">
                 <div class="object-details">
@@ -137,7 +142,7 @@ if ($object_id) {
             var longitude = parseFloat(coordinatesMatch[2]);
 
             var myMap = new ymaps.Map("map", {
-                center: [latitude, longitude],
+                center: [longitude, latitude],
                 zoom: 16
             });
 

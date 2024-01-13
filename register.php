@@ -28,9 +28,16 @@ if (!empty($_POST)) {
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $result = mysqli_query($connect, "SELECT * FROM users WHERE login='$login'");
+    $query = "SELECT * FROM users WHERE login=?";
+    $stmt = $connect->prepare($query);
+    $stmt->bind_param('s', $login);
+    $stmt->execute();
+    $result = $stmt->get_result();
     if (mysqli_num_rows($result) == 0) {
-        mysqli_query($connect, "INSERT INTO users (login, password, name) VALUES ('$login', '$hashedPassword', '$name')");
+        $query = "INSERT INTO users (login, password, name) VALUES (?, ?, ?)";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param('sss', $login, $hashedPassword, $name);
+        $stmt->execute();
         header("Location: login.php");
         exit;
     } else {

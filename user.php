@@ -4,7 +4,11 @@ include 'database.php';
 include 'navbar.php';
 $userId = $_SESSION['user_id'];
 
-$result = mysqli_query($connect, "SELECT name FROM users WHERE user_id='$userId'");
+$query = "SELECT name FROM users WHERE user_id=?";
+$stmt = $connect->prepare($query);
+$stmt->bind_param('s', $userId);
+$stmt->execute();
+$result = $stmt->get_result();
 if ($result && mysqli_num_rows($result) > 0) {
     $user = mysqli_fetch_assoc($result);
     $userName = $user['name'];
@@ -33,7 +37,7 @@ if ($result && mysqli_num_rows($result) > 0) {
             <div class='col-lg-12'>
             <div class ="object-block">
             <h2><?php echo $userName; ?></h2><br>
-            <a href="update_user.php" class="btn btn-primary">Изменить данные</a>
+            <a href="" class="btn btn-primary">Изменить данные</a>
             <a href="logout.php" class="btn btn-primary">Выйти</a>
             <?php else : ?>
             <p>Ошибка загрузки данных пользователя.</p>
