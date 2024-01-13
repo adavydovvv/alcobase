@@ -17,7 +17,7 @@ if (isset($_SESSION['user_id'])) {
             header("Location: points.php?object_id=$pointId"); 
             exit;
         } else {
-            echo "Ошибка при добавлении отзыва: " . $connect->error;
+            echo $connect->error;
         }
     } else {
         echo "Недопустимый метод запроса.";

@@ -28,6 +28,7 @@ if ($object_id) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300&display=swap" rel="stylesheet">
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=b46bd115-d949-4af0-b25c-e86b2e439577&lang=ru_RU" type="text/javascript"></script>
     <script src="script.js"></script>
     <title>АлкоХаб</title>
     
@@ -106,12 +107,49 @@ if ($object_id) {
                     ?>
                 </div>
             </div>
+            
+    
+
+                    <div class="col-md-6">
+                        <div class="object-details">
+                            <h3>Адрес объекта: <?php echo $object['address']; ?></h3>
+                            <div id="map" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+            
         </div>
     </div>
 
 <footer>
     <p><a href = 'https://data.mos.ru/opendata/586?isDynamic=false'>Ссылка на источник данных</a></p>
 </footer>
+<script type="text/javascript">
+    ymaps.ready(init);
+
+    function init() {
+        var geoDataString = '<?php echo $object['geo_data']; ?>';
+
+        var coordinatesMatch = geoDataString.match(/coordinates=\[([\d.]+),\s*([\d.]+)\]/);
+
+        if (coordinatesMatch) {
+            var latitude = parseFloat(coordinatesMatch[1]);
+            var longitude = parseFloat(coordinatesMatch[2]);
+
+            var myMap = new ymaps.Map("map", {
+                center: [latitude, longitude],
+                zoom: 16
+            });
+
+            var myPlacemark = new ymaps.Placemark([longitude, latitude], {
+                hintContent: '<?php echo $object['address']; ?>'
+            });
+
+            myMap.geoObjects.add(myPlacemark);
+        }
+    }
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
 </html>
