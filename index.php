@@ -38,7 +38,34 @@ if ($typeFilter !== '') {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300&display=swap" rel="stylesheet">
     <title>АлкоХаб</title>
-    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+        $('#address').on('input', function() {
+        var searchQuery = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: 'search.php',
+            data: {
+                address: searchQuery
+            },
+            success: function(response) {
+                $('#search-results').html(response);
+                    }
+            });
+        });
+     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var addressInput = document.getElementById('address');
+        var searchResults = document.getElementById('search-results');
+
+        addressInput.addEventListener('input', function () {
+            searchResults.style.display = this.value.trim() !== '' ? 'block' : 'none';
+        });
+    });
+    </script>
+
 </head>
 
 <body>
@@ -65,6 +92,16 @@ if ($typeFilter !== '') {
             ?>
         </ul>
     </div>
+    
+    <form class="form-inline mt-3">
+        <div class="form-group">
+            <input type="text" class="form-control" id="address" name="address" placeholder="Введите название или адрес">
+        </div>
+    </form>
+    
+    <div id="search-results" class="mt-2" style="display: none;">
+    </div>
+    <br>
 </div>
 </div>
 </div>

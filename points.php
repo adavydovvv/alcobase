@@ -66,17 +66,37 @@ if ($object_id) {
             </div>
             <div class="col-md-6">
                 <div class="object-details">
-                    <h3>Отзывы и рейтинг</h3>
+                    <?php
+                    $pointId = $object['point_id'];
+                    $sql = "SELECT ROUND(AVG(rating), 1) as sredoc FROM reviews WHERE point_id = ?";
+                    $stmt = $connect->prepare($sql);
+                    $stmt->bind_param('i', $pointId);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    if ($result->num_rows > 0) {
+                        $row = $result->fetch_assoc();
+                        if($row['sredoc'] != 0){
+                            echo "<h3>Отзывы</h3>";
+                            echo "<h5>Средняя оценка: ". $row['sredoc'] ."</h5>";
+                        }
+                        else{
+                            echo "<h3>Отзывы</h3>";
+                        }  
+                    }
+                    ?>
                     <?php
                     $pointId = $object['point_id'];
 
-                    $sql = "SELECT * FROM reviews JOIN users ON reviews.user_id = users.user_id WHERE point_id = $pointId";
-                    $result = $connect->query($sql);
+                    $sql = "SELECT name, timestamp, ROUND(rating, 0) as r, comment  FROM reviews JOIN users ON reviews.user_id = users.user_id WHERE point_id = ?";
+                    $stmt = $connect->prepare($sql);
+                    $stmt->bind_param('i', $pointId);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
                     echo "<hr>";
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo "<p><strong>" . $row['name'] . "</strong> ". $row['timestamp'] . "</p>";
-                            echo "<p><strong>Оценка:</strong> " . $row['rating'] . "</p>";
+                            echo "<p><strong>Оценка:</strong> " . $row['r'] . "</p>";
                             echo "<p><strong>Отзыв:</strong> " . $row['comment'] . "</p>";
                             echo "<hr>";
                         }

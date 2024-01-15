@@ -227,3 +227,24 @@ label {
 .rating input:checked ~ label {
     background-image: url('fillstar.png');
 }
+
+#search-results {
+    max-height: 200px;
+    overflow-y: auto; 
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #ffffff;
+}
+
+#search-results a {
+    display: block;
+    padding: 5px;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s;
+}
+
+#search-results a:hover {
+    background-color: #f8f8f8;
+}
