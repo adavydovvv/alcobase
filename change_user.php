@@ -48,14 +48,14 @@ if (!empty($_POST)) {
         <input class="form-control" type="text" name="name">
     </div>
 
-
+    <br>
     <div>
         <label>Новый пароль</label>
         <input class="form-control" type="password" name="password">
     </div>
     <br>
     <div>
-        <button class='btn-primary' type="submit">Отправить</button>
+        <button class='btn btn-primary' type="submit">Отправить</button>
     </div>
 </form>
 

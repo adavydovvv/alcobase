@@ -16,7 +16,7 @@ $flag=true;
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
-        .regbutton {
+        .regbutton, .regbutton a {
             padding: 8px 12px;
             background-color: #007bff;
             color: #ffffff;
@@ -25,6 +25,7 @@ $flag=true;
             cursor: pointer;
             text-decoration: none;
             margin-top: 10px;
+            transition: background-color 0.3s ease;
         }
 
         .regbutton:hover {
@@ -79,7 +80,7 @@ if (!empty($_POST)) {
         <label>Логин</label>
         <input class="form-control" type="text" name="login">
     </div>
-
+    <br>
     <div>
         <label>Пароль</label>
         <input class="form-control" type="password" name="password">
@@ -95,10 +96,11 @@ if (!empty($_POST)) {
         <button class="regbutton" type="submit">Войти</button>
     </div>
     <br>
+    
+    </div>
+    </div>
     <div>
-        <a class='regbutton'href="register.php">Регистрация</a>
-    </div>
-    </div>
+        <a class='btn btn-primary'href="register.php">Регистрация</a>
     </div>
     </div>
 </form>

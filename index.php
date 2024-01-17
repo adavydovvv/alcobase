@@ -101,7 +101,7 @@ if ($typeFilter !== '') {
             
                             if ($result && $result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
-                                    echo "<li><a class='dropdown-item' " . urlencode($row['type']) . "'>" . $row['type'] . "</a></li>";
+                                    echo "<li><a class='dropdown-item' href='?page=1&type=" . urlencode($row['type']) . "'>" . $row['type'] . "</a></li>";
                                 }
                             }
             
@@ -200,6 +200,10 @@ if ($typeFilter !== '') {
             echo "</div>";
             echo "</div>";
             ?>
+            <br>
+            <br>
+            <br>
+            <br>
         </div>
 </div>
 <footer>

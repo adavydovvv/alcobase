@@ -51,19 +51,19 @@ if (!empty($_POST)) {
         <label>ФИО</label>
         <input class="form-control" type="text" name="name">
     </div>
-
+    <br>
     <div>
         <label>Логин</label>
         <input class="form-control" type="text" name="login">
     </div>
-
+    <br>
     <div>
         <label>Пароль</label>
         <input class="form-control" type="password" name="password">
     </div>
     <br>
     <div>
-        <button class='btn-primary' type="submit">Регистрация</button>
+        <button class='btn btn-primary' type="submit">Регистрация</button>
     </div>
 </form>
 

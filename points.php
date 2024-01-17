@@ -86,10 +86,12 @@ if ($object_id) {
                     ?>
                     <?php
                     $pointId = $object['point_id'];
+                    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
-                    $sql = "SELECT name, timestamp, ROUND(rating, 0) as r, comment  FROM reviews JOIN users ON reviews.user_id = users.user_id WHERE point_id = ?";
+                    $offset = ($currentPage - 1) * 3;
+                    $sql = "SELECT name, timestamp, ROUND(rating, 0) as r, comment  FROM reviews JOIN users ON reviews.user_id = users.user_id WHERE point_id = ? LIMIT 3 OFFSET ?";
                     $stmt = $connect->prepare($sql);
-                    $stmt->bind_param('i', $pointId);
+                    $stmt->bind_param('ii', $pointId, $offset);
                     $stmt->execute();
                     $result = $stmt->get_result();
                     echo "<hr>";
@@ -103,7 +105,37 @@ if ($object_id) {
                     } else {
                         echo "Отзывов пока нет.";
                     }
+                    ?>
+                     <div class = "row">
+                        <?php
+                        $query = "SELECT COUNT(*) AS total FROM reviews";
+                        $stmt = $connect->prepare($query);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if ($result && $result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $totalObjects = $row['total'];
+                        }
 
+                        $totalPages = ceil($totalObjects / 3);
+                        echo "<div class='col-12'>";
+                        echo "<div class='pagination-links'>";
+                        echo "<a href='?page=1&object_id=$object_id'>Первая страница</a>";
+                        if ($currentPage > 1) {
+                            $prevPage = $currentPage - 1;
+                            echo "<a href='?page=$prevPage&object_id=$object_id'>Предыдущая страница</a>";
+                        }
+
+                        if ($currentPage < $totalPages) {
+                            $nextPage = $currentPage + 1;
+                            echo "<a href='?page=$nextPage&object_id=$object_id'>Следующая страница</a>";
+                        }
+                        echo "<a href='?page=$totalPages&object_id=$object_id'>Последняя страница</a>";
+                        echo "</div>";
+                        echo "</div>";
+                        ?>
+                    </div>
+                    <?php
                     session_start();
                     if (isset($_SESSION['user_id'])) {
                         ?>

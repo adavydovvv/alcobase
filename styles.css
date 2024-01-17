@@ -67,7 +67,7 @@ img{
 }
 
 footer {
-    position:sticky;
+    position:absolute;
     left: 0;
     bottom: 0;
     width: 100%; 
@@ -76,7 +76,7 @@ footer {
     padding: 10px; 
 }
 .btn-secondary {
-    background-color: #424649;
+    background-color: #212529;
     color: #fff;
     border-color: #212529;
     margin-bottom: 20px;
@@ -133,6 +133,7 @@ footer {
     overflow: hidden;
     transition: background-color 0.3s ease;
     max-width: 100%;
+    border: 1px solid #cccccc;
 }
 @media (max-width: 767px) {
     .address-column,
@@ -144,8 +145,9 @@ footer {
     }
 }
 .object-block a:hover {
-    background-color: #88bfff;
+    background-color: #f2f5dc;
     color: #000000;
+    border: 1px solid #cccccc;
 }
 
 .pagination-links {
@@ -166,7 +168,8 @@ footer {
 }
 
 .pagination-links a:hover {
-    background-color: #88bfff;
+    background-color: #007bff;
+    color: white;
 }
 
 
