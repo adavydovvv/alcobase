@@ -34,34 +34,41 @@ if (!empty($_POST)) {
     $stmt->execute();
     $result = $stmt->get_result();
     if (mysqli_num_rows($result) == 0) {
-        $query = "INSERT INTO users (login, password, name) VALUES (?, ?, ?)";
+        $query = "CALL InsertUser(?, ?, ?)";
         $stmt = $connect->prepare($query);
         $stmt->bind_param('sss', $login, $hashedPassword, $name);
         $stmt->execute();
         header("Location: login.php");
         exit;
     } else {
-        echo "Пользователь с таким логином уже существует.";
+        header("Location: register.php?error=1");;
     }
 }
 ?>
 
-<form class="f1" method="POST" action="">
+<form class="form-signin w-50 m-auto" method="POST" action="">
+    <h2 style="text-align: center;">Регистрация</h2><br>
     <div>
         <label>ФИО</label>
-        <input class="form-control" type="text" name="name">
+        <input class="form-control" type="text" name="name" required>
     </div>
     <br>
     <div>
         <label>Логин</label>
-        <input class="form-control" type="text" name="login">
+        <input class="form-control" type="text" name="login" required>
     </div>
     <br>
     <div>
         <label>Пароль</label>
-        <input class="form-control" type="password" name="password">
+        <input class="form-control" type="password" name="password" required>
     </div>
     <br>
+    <?php
+        if (isset($_GET['error']) && $_GET['error'] == 1) {
+            echo '<div class="error-message"><p>Пользователь с таким логином уже существует</p></div>';
+        }
+        ?>
+        <br>
     <div>
         <button class='btn btn-primary' type="submit">Регистрация</button>
     </div>

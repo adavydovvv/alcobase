@@ -11,13 +11,13 @@ if (isset($_SESSION['user_id'])) {
         $comment = $_POST['comment'];
         $label = $_POST['label'];
 
-        $query = "INSERT INTO reviews (point_id, user_id, rating, comment, timestamp) VALUES (?, ?, ?, ?, NOW())";
+        $query = "CALL InsertReview(?, ?, ?, ?)";
         $stmt = $connect->prepare($query);
         $stmt->bind_param('iiis', $pointId, $userId, $rating, $comment);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        $query2 = "UPDATE users SET label = ? WHERE user_id = ?";
+        $query2 = "CALL UpdateUserLabel(?, ?)";
         $stmt2 = $connect->prepare($query2);
         $stmt2->bind_param('ii', $label, $userId);
         $stmt2->execute();

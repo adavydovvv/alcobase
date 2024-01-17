@@ -39,7 +39,7 @@ if ($object_id) {
 
 <body>
 <div class="container mt-4">
-        <div class="p-4 bg-light text-center text-white">
+        <div class="p-4 text-center" style="border-radius: 10px; background-color: #f8f9fa; border: 1px solid #ccc;">
         <h2>Информация об объекте торговли</h2>
         </div><br>
         <div class="row">
@@ -134,7 +134,9 @@ if ($object_id) {
                         echo "</div>";
                         echo "</div>";
                         ?>
+                        
                     </div>
+                    <br>
                     <?php
                     session_start();
                     if (isset($_SESSION['user_id'])) {
@@ -178,7 +180,9 @@ if ($object_id) {
             
         </div>
     </div>
-
+     <br>
+     <br>
+     <br>               
 <footer>
     <p><a href = 'https://data.mos.ru/opendata/586?isDynamic=false'>Ссылка на источник данных</a></p>
 </footer>

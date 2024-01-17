@@ -72,18 +72,19 @@ if (!empty($_POST)) {
 }
 ?>
 
-<form class="f1" method="POST" action="">
+<form class="form-signin w-50 m-auto" method="POST" action="">
+    <h2 style="text-align: center;">Авторизация</h2><br>
     <div class="container">
     <div class="row">
     <div class='col-lg-12'>
     <div>
         <label>Логин</label>
-        <input class="form-control" type="text" name="login">
+        <input class="form-control" type="text" name="login" required>
     </div>
     <br>
     <div>
         <label>Пароль</label>
-        <input class="form-control" type="password" name="password">
+        <input class="form-control" type="password" name="password" required>
     </div>
     <br>
     <?php

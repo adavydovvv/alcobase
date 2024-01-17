@@ -31,7 +31,7 @@ if (!empty($_POST)) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     
-    $query = "UPDATE users u SET u.password = ?, u.name = ? WHERE user_id = ?";
+    $query = "CALL ChangeUser(?, ?, ?)";
     $stmt = $connect->prepare($query);
     $stmt->bind_param('ssi', $hashedPassword, $name, $userId);
     $stmt->execute();
@@ -42,7 +42,8 @@ if (!empty($_POST)) {
 }
 ?>
 
-<form class="f1" method="POST" action="">
+<form class="form-signin w-50 m-auto" method="POST" action="">
+    <h2 style="text-align: center;">Изменение данных пользователя</h2><br>
     <div>
         <label>Новые ФИО</label>
         <input class="form-control" type="text" name="name">

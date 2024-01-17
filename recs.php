@@ -74,7 +74,7 @@ if ($typeFilter !== '') {
         <div class="col-12">
             <div class="col-12">
                 <br>
-                <div class="p-4 text-center" style="border-radius: 10px; background-color: #fff; border: 1px solid #dee2e6;">
+                <div class="p-4 text-center" style="border-radius: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6;">
                     <h2>Объекты торговли лицензированным алкоголем <br> на основе личных предпочтений</h2>
                 </div>
                 
@@ -129,6 +129,10 @@ if ($typeFilter !== '') {
             echo "</div>";
             echo "</div>";
             ?>
+            <br>
+            <br>
+            <br>
+            <br>
         </div>
 </div>
 <footer>

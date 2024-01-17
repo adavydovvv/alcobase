@@ -74,14 +74,14 @@ if ($typeFilter !== '') {
         <div class="col-12">
             <div class="col-12">
                 <br>
-                <div class="p-4 text-center" style="border-radius: 10px; background-color: #fff; border: 1px solid #dee2e6;">
+                <div class="p-4 text-center" style="border-radius: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6;">
                     <h2>Объекты торговли лицензированным алкоголем</h2>
                 </div>
                 <br>
             </div>
             <?php if (isset($_SESSION['user_id']) && $_SESSION['label'] != 0) {
                 echo '<div class="col-12">
-                <div class="p-4 text-center" style="border-radius: 10px; background-color: #fff; border: 1px solid #dee2e6;">
+                <div class="p-4 text-center" style="border-radius: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6;">
                     <div class="row">
                         <div class="col-12 col-md-8 col-lg-8">
                             <form>
@@ -118,7 +118,7 @@ if ($typeFilter !== '') {
             </div>';
         } else {
                 echo '<div class="col-12">
-                <div class="p-4 text-center" style="border-radius: 10px; background-color: #fff; border: 1px solid #dee2e6;">
+                <div class="p-4 text-center" style="border-radius: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6;">
                     <div class="row">
                         <div class="col-12 col-md-10 col-lg-10">
                             <form>
