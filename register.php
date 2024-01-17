@@ -46,7 +46,7 @@ if (!empty($_POST)) {
 }
 ?>
 
-<form method="POST" action="">
+<form class="f1" method="POST" action="">
     <div>
         <label>ФИО</label>
         <input class="form-control" type="text" name="name">

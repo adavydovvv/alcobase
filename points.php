@@ -107,9 +107,10 @@ if ($object_id) {
                     session_start();
                     if (isset($_SESSION['user_id'])) {
                         ?>
-                        <form method="POST" action="rew_treat.php" id="reviewForm">
+                        <form class="f1" method="POST" action="rew_treat.php" id="reviewForm">
                         <label for="rating" class="form-label">Оценка</label>
                         <input type="hidden" name="point_id" value="<?php echo $pointId; ?>">
+                        <input type="hidden" name="label" value="<?php echo $object['label']; ?>">
                         <div class="mb-3">
                             <div class="rating">
                                 <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
@@ -153,26 +154,22 @@ if ($object_id) {
     ymaps.ready(init);
 
     function init() {
-        var geoDataString = '<?php echo $object['geo_data']; ?>';
-
-        var coordinatesMatch = geoDataString.match(/coordinates=\[([\d.]+),\s*([\d.]+)\]/);
-
-        if (coordinatesMatch) {
-            var latitude = parseFloat(coordinatesMatch[1]);
-            var longitude = parseFloat(coordinatesMatch[2]);
+    
+            var latitude = '<?php echo $object['width']; ?>';
+            var longitude = '<?php echo $object['longitude']; ?>';
 
             var myMap = new ymaps.Map("map", {
-                center: [longitude, latitude],
+                center: [latitude, longitude],
                 zoom: 16
             });
 
-            var myPlacemark = new ymaps.Placemark([longitude, latitude], {
+            var myPlacemark = new ymaps.Placemark([latitude, longitude], {
                 hintContent: '<?php echo $object['address']; ?>'
             });
 
             myMap.geoObjects.add(myPlacemark);
         }
-    }
+    
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>

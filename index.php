@@ -1,7 +1,34 @@
 <?php
 include 'database.php';
 include 'navbar.php';
+session_start();
 
+if (isset($_SESSION['user_id']) && $_SESSION['label'] != 0) {
+    $userLabel = $_SESSION['label'];
+
+    $objectsPerPage = 10;
+    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+
+    $offset = ($currentPage - 1) * $objectsPerPage;
+    $typeFilter = isset($_GET['type']) ? $_GET['type'] : '';
+
+    $query = "SELECT point_id, object_name, address FROM points";
+
+    if ($typeFilter !== '') {
+        $query .= " WHERE object_name LIKE ? AND label = ? LIMIT ? OFFSET ?";
+
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param('siii', $userLabel, $typeFilter, $objectsPerPage, $offset);
+
+    } else {
+        $query .= " WHERE label = ? LIMIT ? OFFSET ?";
+
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param('iii', $userLabel, $objectsPerPage, $offset);
+    }
+
+}
+else{
 $objectsPerPage = 10;
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
@@ -22,7 +49,7 @@ if ($typeFilter !== '') {
     $stmt = $connect->prepare($query);
     $stmt->bind_param('ii', $objectsPerPage, $offset);
 }
-
+}
 
 ?>
 
@@ -70,43 +97,90 @@ if ($typeFilter !== '') {
 
 <body>
 <div class="container">
-<div class="row">
-<div class='col-lg-12'>
-    <div class="p-4 bg-light text-center text-white">
-        <h2>Объекты торговли лицензированным алкоголем</h2>
-    </div><br>
-</div>
-<div class='col-lg-6 col-md-6 col-sm-12'>
-    <div class="btn-group">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle='dropdown'>Тип объекта<span class='caret'></span></button>
-        <ul class='dropdown-menu'>
-            <?php
-            $typeQuery = "SELECT DISTINCT SUBSTRING_INDEX(object_name, ' ', 1) AS type FROM points";
-            $result = $connect->query($typeQuery);
+    <div class="row">
+        <div class="col-12">
+            <div class="col-12">
+                <br>
+                <div class="p-4 text-center" style="border-radius: 10px; background-color: #fff; border: 1px solid #dee2e6;">
+                    <h2>Объекты торговли лицензированным алкоголем</h2>
+                </div>
+                <br>
+            </div>
+            <?php if (isset($_SESSION['user_id']) && $_SESSION['label'] != 0) {
+                echo '<div class="col-12">
+                <div class="p-4 text-center" style="border-radius: 10px; background-color: #fff; border: 1px solid #dee2e6;">
+                    <div class="row">
+                        <div class="col-12 col-md-8 col-lg-8">
+                            <form>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="Введите адрес">
+                                </div>
+                            </form>
+                            <div id="search-results" class="mt-2" style="display: none;"></div>
+                        </div>
+            
+                        <div class="col-12 col-md-2 col-lg-2">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Тип объекта<span class="caret"></span></button>
+                            <ul class="dropdown-menu">';
+                            
+                            $typeQuery = "SELECT DISTINCT SUBSTRING_INDEX(object_name, ' ', 1) AS type FROM points";
+                            $result = $connect->query($typeQuery);
+            
+                            if ($result && $result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<li><a class='dropdown-item' href=recomedations.php" . urlencode($row['type']) . "'>" . $row['type'] . "</a></li>";
+                                }
+                            }
+            
+                            echo '</ul>
+                        </div>
+            
+                        <div class="col-12 col-md-2 col-lg-2">
+                            <a class="btn btn-secondary">Рекомендовано вам</a>
+                        </div>
+                    </div>
+                </div>
+            
+                <br>
+            </div>';
+        } else {
+                echo '<div class="col-12">
+                <div class="p-4 text-center" style="border-radius: 10px; background-color: #fff; border: 1px solid #dee2e6;">
+                    <div class="row">
+                        <div class="col-12 col-md-10 col-lg-10">
+                            <form>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="Введите адрес">
+                                </div>
+                            </form>
+                            <div id="search-results" class="mt-2" style="display: none;"></div>
+                        </div>
 
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<li><a class='dropdown-item' href='?page=1&type=" . urlencode($row['type']) . "'>" . $row['type'] . "</a></li>";
-                }
-            }
-            ?>
-        </ul>
-    </div>
-    
-    <form class="form-inline mt-3">
-        <div class="form-group">
-            <input type="text" class="form-control" id="address" name="address" placeholder="Введите название или адрес">
+                        <div class="col-12 col-md-2 col-lg-2">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Тип объекта<span class="caret"></span></button>
+                            <ul class="dropdown-menu">';
+                            
+                            $typeQuery = "SELECT DISTINCT SUBSTRING_INDEX(object_name, ' ', 1) AS type FROM points";
+                            $result = $connect->query($typeQuery);
+
+                            if ($result && $result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<li><a class='dropdown-item' href='?page=1&type=" . urlencode($row['type']) . "'>" . $row['type'] . "</a></li>";
+                                }
+                            }
+
+                            echo '</ul>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+            </div>';
+            }            
+        ?>
+            
         </div>
-    </form>
-    
-    <div id="search-results" class="mt-2" style="display: none;">
-    </div>
-    <br>
 </div>
-</div>
-</div>
-
-  <div class="container">
     <div class="row">
             <?php
              $stmt->execute();
@@ -123,7 +197,10 @@ if ($typeFilter !== '') {
                     echo "</div>";
                 }
             }
-                    
+            ?>
+        </div>  
+        <div class = "row">
+            <?php
             $query = "SELECT COUNT(*) AS total FROM points";
             $stmt = $connect->prepare($query);
             $stmt->execute();
@@ -152,7 +229,6 @@ if ($typeFilter !== '') {
             ?>
         </div>
 </div>
-
 <footer>
     <p><a href = 'https://data.mos.ru/opendata/586?isDynamic=false'>Ссылка на источник данных</a></p>
 </footer>

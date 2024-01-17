@@ -55,6 +55,7 @@ if (!empty($_POST)) {
         if (password_verify($password, $user['password'])) {
             session_start();
             $_SESSION["user_id"] = $user['user_id'];
+            $_SESSION["label"] = $user['label'];
             header("Location: index.php");
             exit;
         }
@@ -70,7 +71,7 @@ if (!empty($_POST)) {
 }
 ?>
 
-<form method="POST" action="">
+<form class="f1" method="POST" action="">
     <div class="container">
     <div class="row">
     <div class='col-lg-12'>
