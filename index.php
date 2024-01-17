@@ -1,34 +1,7 @@
 <?php
 include 'database.php';
 include 'navbar.php';
-session_start();
 
-if (isset($_SESSION['user_id']) && $_SESSION['label'] != 0) {
-    $userLabel = $_SESSION['label'];
-
-    $objectsPerPage = 10;
-    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
-
-    $offset = ($currentPage - 1) * $objectsPerPage;
-    $typeFilter = isset($_GET['type']) ? $_GET['type'] : '';
-
-    $query = "SELECT point_id, object_name, address FROM points";
-
-    if ($typeFilter !== '') {
-        $query .= " WHERE object_name LIKE ? AND label = ? LIMIT ? OFFSET ?";
-
-        $stmt = $connect->prepare($query);
-        $stmt->bind_param('siii', $userLabel, $typeFilter, $objectsPerPage, $offset);
-
-    } else {
-        $query .= " WHERE label = ? LIMIT ? OFFSET ?";
-
-        $stmt = $connect->prepare($query);
-        $stmt->bind_param('iii', $userLabel, $objectsPerPage, $offset);
-    }
-
-}
-else{
 $objectsPerPage = 10;
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
@@ -49,7 +22,7 @@ if ($typeFilter !== '') {
     $stmt = $connect->prepare($query);
     $stmt->bind_param('ii', $objectsPerPage, $offset);
 }
-}
+
 
 ?>
 
@@ -128,7 +101,7 @@ if ($typeFilter !== '') {
             
                             if ($result && $result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
-                                    echo "<li><a class='dropdown-item' href=recomedations.php" . urlencode($row['type']) . "'>" . $row['type'] . "</a></li>";
+                                    echo "<li><a class='dropdown-item' " . urlencode($row['type']) . "'>" . $row['type'] . "</a></li>";
                                 }
                             }
             
@@ -136,7 +109,7 @@ if ($typeFilter !== '') {
                         </div>
             
                         <div class="col-12 col-md-2 col-lg-2">
-                            <a class="btn btn-secondary">Рекомендовано вам</a>
+                            <a class="btn btn-secondary" href=recs.php>Рекомендовано вам</a>
                         </div>
                     </div>
                 </div>

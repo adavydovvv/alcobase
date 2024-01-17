@@ -37,7 +37,7 @@ if ($result && mysqli_num_rows($result) > 0) {
             <div class='col-lg-12'>
             <div class ="object-block">
             <h2><?php echo $userName; ?></h2><br>
-            <a href="" class="btn btn-primary">Изменить данные</a>
+            <a href="change_user.php" class="btn btn-primary">Изменить данные</a>
             <a href="logout.php" class="btn btn-primary">Выйти</a>
             <?php else : ?>
             <p>Ошибка загрузки данных пользователя.</p>

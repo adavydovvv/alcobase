@@ -22,6 +22,8 @@ if (isset($_SESSION['user_id'])) {
         $stmt2->bind_param('ii', $label, $userId);
         $stmt2->execute();
         
+        $_SESSION["user_id"] = $userId;
+        $_SESSION["label"] = $label;
         if ($stmt) {
             header("Location: points.php?object_id=$pointId"); 
             exit;
